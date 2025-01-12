@@ -16,11 +16,14 @@ import urlType from "../../constants/UrlConstants";
 import { Colors } from "../../constants/theme";
 import moment from "moment";
 import io from "socket.io-client";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Dispute = ({ navigation, route }) => {
   const { orderId, status, loginUserId } = route.params;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
   const socket = io(urlType.SOCKET_BACKEND);
   const flatListRef = useRef(null);
 
@@ -36,7 +39,20 @@ const Dispute = ({ navigation, route }) => {
     },
   });
 
-  // UseEffect to update messages when chatData changes
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const userString = await AsyncStorage.getItem("@user");
+        const user = await JSON.parse(userString);
+        if (user) {
+          setUserInfo(user);
+        }
+      };
+      fetchData();
+      return () => {};
+    }, [])
+  );
+
   useEffect(() => {
     if (chatData.isSuccess && chatData.data) {
       setMessages(chatData.data);
@@ -48,55 +64,44 @@ const Dispute = ({ navigation, route }) => {
   useEffect(() => {
     socket.emit("joinDisputeRoom", orderId);
 
-    // Listen for new dispute messages
     socket.on("receiveDisputeMessage", (newMessage) => {
       console.log("New dispute message received:", newMessage);
 
-      // Ensure newMessage matches the structure of existing messages
       const formattedMessage = {
-        _id: newMessage._id || Math.random().toString(), // Generate a temporary unique ID if not present
+        _id: newMessage._id || Math.random().toString(),
         content: newMessage.content,
         sender: newMessage.sender,
         timestamp: newMessage.timestamp || new Date(),
       };
 
-      // Append the new message to the messages state
       setMessages((prevMessages) => ({
         ...prevMessages,
         messages: [...(prevMessages.messages || []), formattedMessage],
       }));
 
-      // Scroll to the end
       setTimeout(() => {
         flatListRef.current?.scrollToEnd({ animated: true });
       }, 100);
     });
 
-    // Cleanup on unmount
     return () => {
       socket.disconnect();
     };
   }, [orderId]);
 
-  const sendMessage = async () => {
+  const sendMessage = () => {
     if (message.trim()) {
       const newMessage = {
         orderId: orderId,
         content: message,
+        sender: loginUserId,
+        senderType: "users",
+        userType: userInfo?.userType
       };
 
-      // Send the message using the API
-      try {
-        await apiRequest(urlType.BACKEND, {
-          method: "put",
-          url: `/dispute/sentDisputeMsg`,
-          data: newMessage,
-        });
-        // chatData.refetch();
-        setMessage("");
-      } catch (error) {
-        console.error("Error sending message:", error);
-      }
+      socket.emit("sendDisputeMessage", newMessage);
+
+      setMessage("");
     }
   };
 
@@ -177,16 +182,33 @@ const Dispute = ({ navigation, route }) => {
       />
 
       <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Aa"
-          value={message}
-          onChangeText={(text) => setMessage(text)}
-          placeholderTextColor="#7a7a7a"
-        />
-        <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-          <Icon name="send" size={20} color={Colors.primary.main} />
-        </TouchableOpacity>
+        {status === "open" ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Write here..."
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+              placeholderTextColor="#7a7a7a"
+            />
+            <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
+              <Icon name="send" size={20} color={Colors.primary.main} />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                textAlign: "center",
+                color: Colors.primary.lightGray,
+                fontWeight: "600",
+                fontSize: 16,
+              }}
+            >
+              This dispute is {status}
+            </Text>
+          </View>
+        )}
       </View>
     </View>
   );

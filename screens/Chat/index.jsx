@@ -24,7 +24,6 @@ const Chat = ({ navigation, route }) => {
   const socket = io(urlType.SOCKET_BACKEND);
   const flatListRef = useRef(null);
 
-  // Fetch existing messages using API
   const chatData = useQuery({
     queryKey: ["chatroomMessages", orderId],
     queryFn: async () => {
@@ -36,7 +35,6 @@ const Chat = ({ navigation, route }) => {
     },
   });
 
-  // UseEffect to update messages when chatData changes
   useEffect(() => {
     if (chatData.isSuccess && chatData.data) {
       setMessages(chatData.data);
@@ -54,7 +52,6 @@ const Chat = ({ navigation, route }) => {
     socket.on("receiveMessage", (newMessage) => {
       console.log("New message received:", newMessage);
 
-      // Normalize newMessage structure
       if (newMessage.sender && typeof newMessage.sender === "string") {
         newMessage.sender = { _id: newMessage.sender };
       }
@@ -72,25 +69,18 @@ const Chat = ({ navigation, route }) => {
     };
   }, [orderId]);
 
-  const sendMessage = async () => {
+  const sendMessage = () => {
     if (message.trim()) {
       const newMessage = {
         orderId: orderId,
+        sender: loginUserId,
         content: message,
       };
 
-      // Send the message using the API
-      try {
-        await apiRequest(urlType.BACKEND, {
-          method: "put",
-          url: `/chat/sendMessage`,
-          data: newMessage,
-        });
-        // chatData.refetch();
-        setMessage("");
-      } catch (error) {
-        console.error("Error sending message:", error);
-      }
+      // Emit the sendMessage event with the new message data
+      socket.emit("sendMessage", newMessage);
+
+      setMessage("");
     }
   };
 
@@ -177,7 +167,7 @@ const Chat = ({ navigation, route }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Aa"
+          placeholder="Write here..."
           value={message}
           onChangeText={(text) => setMessage(text)}
           placeholderTextColor="#7a7a7a"
