@@ -1,0 +1,16 @@
+export const citiesName = [
+    { label: "Karachi", value: "karachi" },
+    { label: "Lahore", value: "lahore" },
+    { label: "Islamabad", value: "islamabad" },
+    { label: "Rawalpindi", value: "rawalpindi" },
+    { label: "Faisalabad", value: "faisalabad" },
+    { label: "Multan", value: "multan" },
+    { label: "Peshawar", value: "peshawar" },
+    { label: "Quetta", value: "quetta" },
+    { label: "Sialkot", value: "sialkot" },
+    { label: "Gujranwala", value: "gujranwala" },
+    { label: "Sukkur", value: "sukkur" },
+    { label: "Bahawalpur", value: "bahawalpur" },
+    { label: "Sargodha", value: "sargodha" },
+    { label: "Hyderabad", value: "hyderabad" },
+];
