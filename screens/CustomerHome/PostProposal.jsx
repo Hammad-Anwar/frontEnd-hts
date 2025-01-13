@@ -94,7 +94,8 @@ const PostProposal = ({ navigation }) => {
     },
     onSuccess: async (e) => {
       if (e.status === 200) {
-        console.log("SDDSD", e);
+        console.log("SDDSD5", e);
+        navigation.navigate("Profile");
         setDescription(""),
           setWorkingDays(""),
           setStartDate(""),

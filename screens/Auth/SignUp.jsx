@@ -100,7 +100,8 @@ const SignUp = ({ navigation }) => {
 
   const handleSignup = async () => {
     var emailFormat = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // var contactNumberFormat = /^\s*(\+92)?(\d{9})\s*$/;
+    var passwordFormat = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  
     if (
       email.length > 0 &&
       fullName.length > 0 &&
@@ -112,18 +113,27 @@ const SignUp = ({ navigation }) => {
       password === confirmPassword
     ) {
       if (email.match(emailFormat)) {
-        const data = {
-          fullName: fullName,
-          email: email,
-          password: password,
-          mobileNo: mobileNo,
-          address: address,
-          city: selectedCity,
-          userType: selectedUser,
-        };
-        await signupMutation.mutate(data);
-        // console.log(loginMutation.isLoading);
-        // console.log(data);
+        if (password.match(passwordFormat)) {
+          const data = {
+            fullName: fullName,
+            email: email,
+            password: password,
+            mobileNo: mobileNo,
+            address: address,
+            city: selectedCity,
+            userType: selectedUser,
+          };
+          await signupMutation.mutate(data);
+        } else {
+          showMessage({
+            message:
+              "Password must be at least 8 characters long, include 1 uppercase letter, and 1 number",
+            type: "danger",
+            color: "#fff",
+            backgroundColor: "red",
+            floating: true,
+          });
+        }
       } else {
         showMessage({
           message: "Invalid Email Format",
@@ -151,6 +161,7 @@ const SignUp = ({ navigation }) => {
       });
     }
   };
+  
   return (
     <ScrollView>
       <View style={[styles.container, { paddingTop: 0 }]}>

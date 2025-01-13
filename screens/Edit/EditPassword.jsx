@@ -53,19 +53,29 @@ const EditPassword = ({ navigation }) => {
   });
 
   const handleUpdate = async () => {
+    const passwordFormat = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/; 
     if (
       oldPassword.length > 0 &&
       newPassword.length > 0 &&
       oldPassword !== newPassword &&
       newPassword === confirmPassword
     ) {
-      const data = {
-        oldPassword: oldPassword,
-        newPassword: confirmPassword,
-      };
-      await updatePasswordMutation.mutate(data);
-      // console.log(loginMutation.isLoading);
-      //   console.log(data);
+      if (newPassword.match(passwordFormat)) {
+        const data = {
+          oldPassword: oldPassword,
+          newPassword: confirmPassword,
+        };
+        await updatePasswordMutation.mutate(data);
+      } else {
+        showMessage({
+          message:
+            "New password must be at least 8 characters long, include 1 uppercase letter, and 1 number",
+          type: "danger",
+          color: "#fff",
+          backgroundColor: "red",
+          floating: true,
+        });
+      }
     } else if (newPassword !== confirmPassword) {
       showMessage({
         message: "Password does not match",
@@ -93,6 +103,7 @@ const EditPassword = ({ navigation }) => {
       });
     }
   };
+  
   return (
     <View style={[styles.container, { paddingTop: 20 }]}>
       <TextInput
