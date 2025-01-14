@@ -8,6 +8,7 @@ import {
   Image,
   FlatList,
   RefreshControl,
+  Linking,
 } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import logoImg from "../../assets/logo.png";
@@ -223,16 +224,37 @@ const VendorHome = () => {
 
       {isPersonalInfoVisible === item?._id && (
         <View style={styles.personalInfo}>
-          <Text style={styles.infoText}>
-            Phone: {item?.customerUser?.mobileNo}
-          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`tel:${item?.customerUser?.mobileNo}`)
+            }
+          >
+            <Text style={styles.infoText}>
+              Phone: {item?.customerUser?.mobileNo}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.infoText}>City: {item?.customerUser?.city}</Text>
-          <Text style={styles.infoText}>
-            Address: {item?.customerUser?.address}
-          </Text>
-          <Text style={styles.infoText}>
-            Email: {item?.customerUser?.email}
-          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              const address = encodeURIComponent(item?.customerUser?.address);
+              Linking.openURL(
+                `https://www.google.com/maps/search/?api=1&query=${address}`
+              );
+            }}
+          >
+            <Text style={styles.infoText}>
+              Address: {item?.customerUser?.address}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`mailto:${item?.customerUser?.email}`)
+            }
+          >
+            <Text style={styles.infoText}>
+              Email: {item?.customerUser?.email}
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
 

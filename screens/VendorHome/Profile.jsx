@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  Linking,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
@@ -58,9 +59,22 @@ const Profile = ({ navigation }) => {
     enabled: false,
   });
 
+  const { data: averageRating, refetch: fetchAverageRating } = useQuery({
+    queryKey: ["averageRating"],
+    queryFn: async () => {
+      const result = await apiRequest(urlType.BACKEND, {
+        method: "get",
+        url: `/review/getAverageRating`,
+      });
+      return result.averageRating;
+    },
+    enabled: false,
+  });
+
   useFocusEffect(
     React.useCallback(() => {
       fetchAppliedProposal();
+      fetchAverageRating();
     }, [])
   );
 
@@ -146,16 +160,37 @@ const Profile = ({ navigation }) => {
 
       {isPersonalInfoVisible === item._id && (
         <View style={styles.personalInfo}>
-          <Text style={styles.infoText}>
-            Phone: {item?.customerUser?.mobileNo}
-          </Text>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`tel:${item?.customerUser?.mobileNo}`)
+            }
+          >
+            <Text style={styles.infoText}>
+              Phone: {item?.customerUser?.mobileNo}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.infoText}>City: {item?.customerUser?.city}</Text>
-          <Text style={styles.infoText}>
-            Address: {item?.customerUser?.address}
-          </Text>
-          <Text style={styles.infoText}>
-            Email: {item?.customerUser?.email}
-          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              const address = encodeURIComponent(item?.customerUser?.address);
+              Linking.openURL(
+                `https://www.google.com/maps/search/?api=1&query=${address}`
+              );
+            }}
+          >
+            <Text style={styles.infoText}>
+              Address: {item?.customerUser?.address}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Linking.openURL(`mailto:${item?.customerUser?.email}`)
+            }
+          >
+            <Text style={styles.infoText}>
+              Email: {item?.customerUser?.email}
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -215,7 +250,7 @@ const Profile = ({ navigation }) => {
                   color: Colors.primary.lightBlack,
                 }}
               >
-                4.5
+                {averageRating}
               </Text>
               <MaterialCommunityIcons
                 name="star"

@@ -291,12 +291,30 @@ const VendorOrderDetails = ({ navigation, route }) => {
             <Text style={styles.infoText}>
               City: {orderDetails?.customerUser?.city}
             </Text>
-            <Text style={styles.infoText}>
-              Address: {orderDetails?.customerUser?.address}
-            </Text>
-            <Text style={styles.infoText}>
-              Email: {orderDetails?.customerUser?.email}
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                const address = encodeURIComponent(
+                  orderDetails?.customerUser?.address
+                );
+                Linking.openURL(
+                  `https://www.google.com/maps/search/?api=1&query=${address}`
+                );
+              }}
+            >
+              <Text style={styles.infoText}>
+                Address:
+                {orderDetails?.customerUser?.address}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(`mailto:${orderDetails?.customerUser?.email}`)
+              }
+            >
+              <Text style={styles.infoText}>
+                Email: {orderDetails?.customerUser?.email}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <ScrollView>

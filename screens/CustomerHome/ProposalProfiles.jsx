@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Linking,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -102,20 +103,28 @@ const ProposalProfiles = ({ navigation, route }) => {
         <Image
           source={{
             uri:
-            item?.vendor?.profileImage ||
+              item?.vendor?.profileImage ||
               "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg",
           }}
           style={styles.img}
           resizeMode={"cover"}
         />
         <Text style={styles.vendorName}>{item.vendor.fullName}</Text>
-        <Text style={styles.vendorEmail}>{item.vendor.email}</Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(`mailto:${item.vendor.email}`)}
+        >
+          <Text style={styles.vendorEmail}>{item.vendor.email}</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.content}>
-        <Text style={styles.detailText}>
-          <Text style={styles.label}>Mobile: </Text>
-          {item.vendor.mobileNo}
-        </Text>
+        <TouchableOpacity
+          onPress={() => Linking.openURL(`tel:${item.vendor.mobileNo}`)}
+        >
+          <Text style={styles.detailText}>
+            <Text style={styles.label}>Mobile: </Text>
+            {item.vendor.mobileNo}
+          </Text>
+        </TouchableOpacity>
         <Text style={styles.detailText}>
           <Text style={styles.label}>City: </Text>
           {item.vendor.city}

@@ -142,7 +142,7 @@ const Search = ({}) => {
                       ]}
                     >
                       <Text style={styles.smallTxt}>
-                        {item.rating || "4.5"}
+                        {item?.vendorDetails?.averageRating || 0}
                       </Text>
                       <MaterialCommunityIcons
                         name="star"

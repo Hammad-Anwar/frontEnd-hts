@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Linking,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import profileImg from "../../assets/profileImg.jpg";
@@ -60,7 +61,9 @@ const ServiceProfileDetails = ({ route }) => {
                 size={20}
                 color={Colors.primary.yellow}
               />
-              <Text style={[styles.largeTxt, { fontWeight: "800" }]}> 4.5</Text>
+              <Text style={[styles.largeTxt, { fontWeight: "800" }]}>
+                {vendorData?.vendorDetails?.averageRating || 0}
+              </Text>
             </View>
           </View>
         </View>
@@ -70,11 +73,19 @@ const ServiceProfileDetails = ({ route }) => {
           <Text style={styles.headerText}>Contact Information</Text>
           <View style={styles.contactRow}>
             <MaterialCommunityIcons name="email" size={20} color="#0C2D57" />
-            <Text style={styles.contactText}>{vendorData.email}</Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`mailto:${vendorData.email}`)}
+            >
+              <Text style={styles.contactText}>{vendorData.email}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.contactRow}>
             <MaterialCommunityIcons name="phone" size={20} color="#0C2D57" />
-            <Text style={styles.contactText}>{vendorData.mobileNo}</Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`tel:${vendorData.mobileNo}`)}
+            >
+              <Text style={styles.contactText}>{vendorData.mobileNo}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.contactRow}>
             <MaterialCommunityIcons

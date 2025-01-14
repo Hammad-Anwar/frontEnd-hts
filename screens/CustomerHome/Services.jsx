@@ -114,7 +114,9 @@ const Services = ({ route }) => {
                       { justifyContent: "flex-end", marginVertical: 5 },
                     ]}
                   >
-                    <Text style={styles.smallTxt}>{item.rating || "4.5"}</Text>
+                    <Text style={styles.smallTxt}>
+                      {item?.vendorDetails?.averageRating || 0}
+                    </Text>
                     <MaterialCommunityIcons
                       name="star"
                       size={22}
