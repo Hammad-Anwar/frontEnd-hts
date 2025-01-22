@@ -388,8 +388,8 @@ const VendorOrderDetails = ({ navigation, route }) => {
           orderDetails?.status === "disputed" ? (
             <>
               <View style={styles.reviewContainer}>
-                <Text style={{ fontSize: 16, fontWeight: "500" }}>
-                  {orderDetails?.status} Cancel Reason
+                <Text style={{ textTransform: 'capitalize', fontSize: 16, fontWeight: "500" }}>
+                  {orderDetails?.status} Reason
                 </Text>
                 <View
                   style={{

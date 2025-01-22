@@ -7,13 +7,8 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { Colors } from "../constants/theme";
-// import HomeScreen from "./home";
-// import ProfilePage from "./profile";
 import { StatusBar } from "react-native";
 import StatusBarLayout from "../components/StatusBarLayout";
-// import HomeScreen from "../registration/home";
-import Services from "../registration/Services";
-import ServicesNavigator from "../registration/ServicesNavigator";
 import { useStateValue } from "../context/GlobalContextProvider";
 import ProfileCustomer from "../screens/CustomerHome/Profile";
 import Profile from "../screens/VendorHome/Profile";

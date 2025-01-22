@@ -77,7 +77,7 @@ const Services = ({ route }) => {
           <FlatList
             showsVerticalScrollIndicator={false}
             data={vendorProfileData}
-            keyExtractor={(item) => item._id}
+            keyExtractor={(item) => item._id || Math.random().toString()}
             renderItem={({ item }) => (
               <View
                 style={[

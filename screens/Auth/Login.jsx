@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/styles";
@@ -113,56 +114,58 @@ const Login = () => {
 
       <Text style={styles.title}>Login</Text>
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={setEmail}
-        value={email}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry={true}
-        autoCapitalize="none"
-      />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ForgetPassword")}
-        style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
-      >
-        <Text
-          style={[
-            styles.signupText,
-            {
-              marginLeft: 260,
-              textDecorationLine: "underline",
-              marginBottom: 10,
-            },
-          ]}
+      <ScrollView>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={setEmail}
+          value={email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry={true}
+          autoCapitalize="none"
+        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ForgetPassword")}
+          style={{ justifyContent: "flex-end", alignItems: "flex-end" }}
         >
-          Forget Password
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleLogin}
-        disabled={loginMutation.isPending}
-      >
-        {loginMutation.isPending ? (
-          <ActivityIndicator size={24} color={"#fff"} />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.signupLink} onPress={handleSignup}>
-        <View style={styles.row}>
-          <Text>Don't have account?</Text>
-          <Text style={styles.signupText}>Sign up here</Text>
-        </View>
-      </TouchableOpacity>
+          <Text
+            style={[
+              styles.signupText,
+              {
+                marginLeft: 260,
+                textDecorationLine: "underline",
+                marginBottom: 10,
+              },
+            ]}
+          >
+            Forget Password
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleLogin}
+          disabled={loginMutation.isPending}
+        >
+          {loginMutation.isPending ? (
+            <ActivityIndicator size={24} color={"#fff"} />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.signupLink} onPress={handleSignup}>
+          <View style={styles.row}>
+            <Text>Don't have account?</Text>
+            <Text style={styles.signupText}>Sign up here</Text>
+          </View>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };

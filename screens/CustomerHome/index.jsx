@@ -233,7 +233,7 @@ const CustomerHome = () => {
           <FlatList
             data={formattedVendorData}
             renderItem={renderVendorRow}
-            keyExtractor={(_, index) => `row-${index}`}
+            keyExtractor={(_, index) => `row-${index}` || Math.random().toString()}
             contentContainerStyle={styles.flatListContent}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={

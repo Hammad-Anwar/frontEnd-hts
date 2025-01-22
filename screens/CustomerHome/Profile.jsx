@@ -87,6 +87,7 @@ const Profile = ({ navigation }) => {
             {moment(item.createdAt).format("MMM Do YYYY, h:mm A")}
           </Text>
         </View>
+        
         {item?.status === "accept" ? null : (
           <TouchableOpacity
             onPress={() =>
