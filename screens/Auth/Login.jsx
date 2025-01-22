@@ -109,12 +109,13 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={logoImg} style={styles.img} />
+    <ScrollView style={{ flex: 1, backgroundColor: Colors.primary.white}}>
+      <View style={styles.container}>
+        <Image source={logoImg} style={styles.img} />
 
-      <Text style={styles.title}>Login</Text>
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <ScrollView>
+        <Text style={styles.title}>Login</Text>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
+
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -165,8 +166,8 @@ const Login = () => {
             <Text style={styles.signupText}>Sign up here</Text>
           </View>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 

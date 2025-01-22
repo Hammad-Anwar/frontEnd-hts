@@ -93,7 +93,18 @@ const ServiceProfileDetails = ({ route }) => {
               size={20}
               color="#0C2D57"
             />
-            <Text style={styles.contactText}>{vendorData.address}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                const address = encodeURIComponent(
+                  vendorData?.address
+                );
+                Linking.openURL(
+                  `https://www.google.com/maps/search/?api=1&query=${address}`
+                );
+              }}
+            >
+            <Text style={styles.contactText}>{vendorData?.address}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.contactRow}>
             <MaterialCommunityIcons name="city" size={20} color="#0C2D57" />

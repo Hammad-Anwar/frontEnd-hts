@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/styles";
@@ -94,33 +95,35 @@ const ForgetPassword = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={logoImg} style={styles.img} />
-      <Text style={styles.title}>Forget Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        onChangeText={setEmail}
-        value={email}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <Text style={{ color: Colors.primary.darkgray, marginBottom: 10 }}>
-        Write email address for the OTP code*
-      </Text>
+    <ScrollView style={{ flex: 1, backgroundColor: Colors.primary.white }}>
+      <View style={styles.container}>
+        <Image source={logoImg} style={styles.img} />
+        <Text style={styles.title}>Forget Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          onChangeText={setEmail}
+          value={email}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <Text style={{ color: Colors.primary.darkgray, marginBottom: 10 }}>
+          Write email address for the OTP code*
+        </Text>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSend}
-        disabled={sendOtpMutation.isPending}
-      >
-        {sendOtpMutation.isPending ? (
-          <ActivityIndicator size={24} color={"#fff"} />
-        ) : (
-          <Text style={styles.buttonText}>Send Email</Text>
-        )}
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSend}
+          disabled={sendOtpMutation.isPending}
+        >
+          {sendOtpMutation.isPending ? (
+            <ActivityIndicator size={24} color={"#fff"} />
+          ) : (
+            <Text style={styles.buttonText}>Send Email</Text>
+          )}
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 

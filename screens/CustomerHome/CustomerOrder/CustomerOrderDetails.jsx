@@ -301,12 +301,31 @@ const CustomerOrderDetails = ({ navigation, route }) => {
             <Text style={styles.infoText}>
               City: {orderDetails?.vendorUser?.vendor?.city}
             </Text>
-            <Text style={styles.infoText}>
-              Address: {orderDetails?.vendorUser?.vendor?.address}
-            </Text>
-            <Text style={styles.infoText}>
-              Email: {orderDetails?.vendorUser?.vendor?.email}
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                const address = encodeURIComponent(
+                  orderDetails?.vendorUser?.vendor?.address
+                );
+                Linking.openURL(
+                  `https://www.google.com/maps/search/?api=1&query=${address}`
+                );
+              }}
+            >
+              <Text style={styles.infoText}>
+                Address: {orderDetails?.vendorUser?.vendor?.address}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  `mailto:${orderDetails?.vendorUser?.vendor?.email}`
+                )
+              }
+            >
+              <Text style={styles.infoText}>
+                Email: {orderDetails?.vendorUser?.vendor?.email}
+              </Text>
+            </TouchableOpacity>
             <Text style={styles.infoText}>
               Work Experience: {orderDetails?.vendorUser?.workExperience}
             </Text>

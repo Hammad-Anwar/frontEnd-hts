@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/styles";
@@ -21,7 +22,7 @@ const OtpScreen = ({ route }) => {
   const navigation = useNavigation();
   const { email } = route?.params;
   const [otp, setOtp] = useState(["", "", "", ""]);
-  const [timer, setTimer] = useState(20); // 5 minutes in seconds
+  const [timer, setTimer] = useState(200); // 5 minutes in seconds
 
   // Countdown Timer Effect
   useEffect(() => {
@@ -133,74 +134,76 @@ const OtpScreen = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={logoImg} style={styles.img} />
+    <ScrollView style={{ flex: 1, backgroundColor: Colors.primary.white }}>
+      <View style={styles.container}>
+        <Image source={logoImg} style={styles.img} />
 
-      <Text style={styles.title}>OTP Verification</Text>
-      <Text style={{ color: "#555", marginBottom: 20 }}>
-        Enter the OTP sent to your email
-      </Text>
+        <Text style={styles.title}>OTP Verification</Text>
+        <Text style={{ color: "#555", marginBottom: 20 }}>
+          Enter the OTP sent to your email
+        </Text>
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          width: "80%",
-          marginBottom: 20,
-        }}
-      >
-        {otp.map((digit, index) => (
-          <TextInput
-            key={index}
-            style={{
-              width: 50,
-              height: 50,
-              borderWidth: 1,
-              borderColor: "#ddd",
-              borderRadius: 10,
-              textAlign: "center",
-              fontSize: 20,
-            }}
-            keyboardType="numeric"
-            maxLength={1}
-            value={digit}
-            onChangeText={(value) => handleOtpChange(index, value)}
-          />
-        ))}
-      </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "80%",
+            marginBottom: 20,
+          }}
+        >
+          {otp.map((digit, index) => (
+            <TextInput
+              key={index}
+              style={{
+                width: 50,
+                height: 50,
+                borderWidth: 1,
+                borderColor: "#ddd",
+                borderRadius: 10,
+                textAlign: "center",
+                fontSize: 20,
+              }}
+              keyboardType="numeric"
+              maxLength={1}
+              value={digit}
+              onChangeText={(value) => handleOtpChange(index, value)}
+            />
+          ))}
+        </View>
 
-      <TouchableOpacity
-        style={{
-          backgroundColor: Colors.primary.main,
-          paddingVertical: 12,
-          paddingHorizontal: 40,
-          borderRadius: 8,
-          marginBottom: 20,
-        }}
-        onPress={handleVerifyOtp}
-        disabled={verifyOtpMutation.isPending}
-      >
-        {verifyOtpMutation.isPending ? (
-          <ActivityIndicator size={24} color={"#fff"} />
-        ) : (
-          <Text style={{ color: "#fff", fontSize: 16 }}>Verify</Text>
-        )}
-      </TouchableOpacity>
-
-      <Text style={{ color: "#888", marginBottom: 10 }}>
-        {timer > 0
-          ? `Resend OTP in ${formatTime(timer)}`
-          : "Didn't receive the OTP?"}
-      </Text>
-
-      {timer === 0 && (
-        <TouchableOpacity onPress={handleReSendOtp}>
-          <Text style={{ color: "#0A84FF", fontWeight: "bold" }}>
-            Resend OTP
-          </Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: Colors.primary.main,
+            paddingVertical: 12,
+            paddingHorizontal: 40,
+            borderRadius: 8,
+            marginBottom: 20,
+          }}
+          onPress={handleVerifyOtp}
+          disabled={verifyOtpMutation.isPending}
+        >
+          {verifyOtpMutation.isPending ? (
+            <ActivityIndicator size={24} color={"#fff"} />
+          ) : (
+            <Text style={{ color: "#fff", fontSize: 16 }}>Verify</Text>
+          )}
         </TouchableOpacity>
-      )}
-    </View>
+
+        <Text style={{ color: "#888", marginBottom: 10 }}>
+          {timer > 0
+            ? `Resend OTP in ${formatTime(timer)}`
+            : "Didn't receive the OTP?"}
+        </Text>
+
+        {timer === 0 && (
+          <TouchableOpacity onPress={handleReSendOtp}>
+            <Text style={{ color: "#0A84FF", fontWeight: "bold" }}>
+              Resend OTP
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 

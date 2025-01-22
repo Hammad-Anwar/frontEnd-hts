@@ -121,45 +121,47 @@ const VendorDetails = ({ navigation, route }) => {
     }
   };
   return (
-    <View style={[styles.container, { paddingTop: 0 }]}>
-      <Image source={logoImg} style={styles.img} />
-      <Text style={styles.title}>Vendor More Details</Text>
-      <Dropdown
-        options={servicesOptions}
-        selectedValue={selectedService}
-        onValueChange={(value) => setSelectedService(value)}
-        defaultValue={"Select the service...."}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Work description"
-        onChangeText={setWorkDescription}
-        value={workDescription}
-        keyboardType="default"
-        placeholderTextColor={Colors.primary.lightGray}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Work experience in year"
-        onChangeText={setWorkExperience}
-        value={workExperience}
-        keyboardType="number-pad"
-        maxLength={2}
-        placeholderTextColor={Colors.primary.lightGray}
-      />
+    <ScrollView style={{ flex: 1, backgroundColor: Colors.primary.white }}>
+      <View style={[styles.container, { paddingTop: 0 }]}>
+        <Image source={logoImg} style={styles.img} />
+        <Text style={styles.title}>Vendor More Details</Text>
+        <Dropdown
+          options={servicesOptions}
+          selectedValue={selectedService}
+          onValueChange={(value) => setSelectedService(value)}
+          defaultValue={"Select the service...."}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Work description"
+          onChangeText={setWorkDescription}
+          value={workDescription}
+          keyboardType="default"
+          placeholderTextColor={Colors.primary.lightGray}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Work experience in year"
+          onChangeText={setWorkExperience}
+          value={workExperience}
+          keyboardType="number-pad"
+          maxLength={2}
+          placeholderTextColor={Colors.primary.lightGray}
+        />
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handlDone}
-        disabled={signupMutation.isPending}
-      >
-        {signupMutation.isPending ? (
-          <ActivityIndicator size={24} color={"#fff"} />
-        ) : (
-          <Text style={styles.buttonText}>Done</Text>
-        )}
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handlDone}
+          disabled={signupMutation.isPending}
+        >
+          {signupMutation.isPending ? (
+            <ActivityIndicator size={24} color={"#fff"} />
+          ) : (
+            <Text style={styles.buttonText}>Done</Text>
+          )}
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 

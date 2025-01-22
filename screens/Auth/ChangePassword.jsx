@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import styles from "../../styles/styles";
@@ -18,6 +19,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { showMessage } from "react-native-flash-message";
 import { useStateValue } from "../../context/GlobalContextProvider";
 import logoImg from "../../assets/logo.png";
+import { Colors } from "../../constants/theme";
 
 const ChangePassword = ({ route }) => {
   const { email, otp } = route?.params;
@@ -86,38 +88,40 @@ const ChangePassword = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image source={logoImg} style={styles.img} />
+    <ScrollView style={{ flex: 1, backgroundColor: Colors.primary.white }}>
+      <View style={styles.container}>
+        <Image source={logoImg} style={styles.img} />
 
-      <Text style={styles.title}>Change Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        onChangeText={setPassword}
-        value={password}
-        secureTextEntry={true}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        onChangeText={setConfirmPassword}
-        value={confirmPassword}
-        secureTextEntry={true}
-        autoCapitalize="none"
-      />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleReset}
-        disabled={resetMutation.isPending}
-      >
-        {resetMutation.isPending ? (
-          <ActivityIndicator size={24} color={"#fff"} />
-        ) : (
-          <Text style={styles.buttonText}>Reset</Text>
-        )}
-      </TouchableOpacity>
-    </View>
+        <Text style={styles.title}>Change Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={setPassword}
+          value={password}
+          secureTextEntry={true}
+          autoCapitalize="none"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          onChangeText={setConfirmPassword}
+          value={confirmPassword}
+          secureTextEntry={true}
+          autoCapitalize="none"
+        />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleReset}
+          disabled={resetMutation.isPending}
+        >
+          {resetMutation.isPending ? (
+            <ActivityIndicator size={24} color={"#fff"} />
+          ) : (
+            <Text style={styles.buttonText}>Reset</Text>
+          )}
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
